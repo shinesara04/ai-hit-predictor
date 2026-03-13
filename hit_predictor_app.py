@@ -13,166 +13,9 @@ st.set_page_config(
     page_title="AI Music Hit Predictor",
     page_icon="🎵",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
-# Cyberpunk / Synthwave Aesthetic
-st.markdown("""
-<style>
-    /* Deep Synthwave Canvas */
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap');
-    
-    .stApp {
-        background-color: #0d0914; /* Deep Violet Black */
-        color: #e2dcf2; 
-        font-family: 'Space Grotesk', sans-serif;
-        background-image: 
-            radial-gradient(circle at 15% 50%, rgba(255, 0, 127, 0.05), transparent 25%),
-            radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.05), transparent 25%);
-    }
-    
-    /* Cyberpunk Header */
-    .hero-title {
-        font-size: 60px !important;
-        font-weight: 700;
-        text-align: center;
-        background: linear-gradient(90deg, #ff007f, #b300ff, #00f3ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 5px;
-        letter-spacing: -1px;
-        text-transform: uppercase;
-        padding-top: 1rem;
-        text-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
-    }
-    .hero-subtitle {
-        font-size: 18px;
-        text-align: center;
-        color: #00f3ff; /* Neon Cyan */
-        font-weight: 400;
-        margin-bottom: 50px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    }
-    
-    /* High-Tech Glass Panels */
-    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] > div[data-testid="stVerticalBlock"] {
-        background: rgba(26, 21, 37, 0.6);
-        backdrop-filter: blur(10px);
-        border-radius: 4px; /* Sharp technical corners */
-        padding: 24px;
-        border: 1px solid rgba(0, 243, 255, 0.2); /* Faint cyan border */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(179, 0, 255, 0.05);
-        transition: all 0.3s ease;
-    }
-    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] > div[data-testid="stVerticalBlock"]:hover {
-        border: 1px solid rgba(0, 243, 255, 0.6);
-        box-shadow: 0 0 20px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.05);
-        transform: translateY(-2px);
-    }
-    
-    /* Neon Sliders */
-    .stSlider > div[data-baseweb="slider"] > div {
-        background: linear-gradient(90deg, #ff007f 0%, #00f3ff 100%);
-        height: 6px !important;
-    }
-    .stSlider > div[data-baseweb="slider"] div[role="slider"] {
-        width: 18px !important;
-        height: 18px !important;
-        background-color: #0d0914 !important;
-        border: 2px solid #00f3ff !important;
-        box-shadow: 0 0 10px #00f3ff !important;
-    }
-
-    /* Core Action Button */
-    .stButton>button {
-        width: 100%;
-        height: 60px;
-        font-size: 20px;
-        font-weight: 700;
-        background-color: transparent;
-        color: #00f3ff;
-        border: 2px solid #00f3ff;
-        border-radius: 0px; /* Cyberpunk flat block */
-        transition: all 0.2s ease;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        margin-top: 20px;
-        margin-bottom: 30px;
-        box-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.2);
-    }
-    .stButton>button:hover {
-        background-color: #00f3ff;
-        color: #0d0914;
-        box-shadow: 0 0 25px #00f3ff;
-        transform: scale(1.02);
-    }
-    
-    /* Stats Box - Holographic Deck */
-    .stats-box {
-        background: rgba(26, 21, 37, 0.8);
-        padding: 32px 24px;
-        border-radius: 4px;
-        text-align: center;
-        border: 1px solid #ff007f;
-        box-shadow: 0 0 20px rgba(255, 0, 127, 0.15), inset 0 0 15px rgba(255, 0, 127, 0.05);
-        transition: all 0.3s ease;
-    }
-    .stats-box:hover {
-        box-shadow: 0 0 30px rgba(255, 0, 127, 0.3), inset 0 0 20px rgba(255, 0, 127, 0.1);
-        transform: scale(1.02);
-    }
-    
-    .stats-box-fail {
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-    }
-    .stats-box-fail:hover {
-        border: 1px solid #ff0000;
-        box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
-    }
-    
-    /* Subheaders - Neon Pink/Purple */
-    h3, h4 {
-        color: #b300ff !important;
-        font-weight: 700 !important;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    /* Fix Slider Label Visibility (Nuclear Option for Max Readability) */
-    .stSlider [data-baseweb="typo-label"],
-    .stSlider [data-baseweb="typo-caption1"],
-    .stSlider [data-testid="stTickBarMin"], 
-    .stSlider [data-testid="stTickBarMax"],
-    .stSlider p,
-    .stSlider span,
-    .stSlider div {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-        font-size: 16px !important;
-        opacity: 1 !important;
-        line-height: 1.5 !important;
-    }
-    
-    /* Ensure the thumb value bubble remains high-contrast */
-    div[data-testid="stThumbValue"] {
-        color: #FFFFFF !important;
-        font-weight: 900 !important;
-        background: #ff007f !important; 
-        padding: 4px 10px !important;
-        border-radius: 4px !important;
-        font-size: 16px !important;
-    }
-    
-    /* DataFrames / Table override */
-    [data-testid="stDataFrame"] {
-        background-color: rgba(26, 21, 37, 0.9);
-        border-radius: 4px;
-        border: 1px solid rgba(0, 243, 255, 0.3);
-    }
-</style>
-""", unsafe_allow_html=True)
 
 # ==========================================
 # LOAD MODELS
@@ -202,8 +45,8 @@ model, scaler, feature_names, best_thresh, df_metrics, roc_data, feature_ranges,
 # ==========================================
 # UI HEADER
 # ==========================================
-st.markdown('<p class="hero-title">AI Music Hit Predictor</p>', unsafe_allow_html=True)
-st.markdown('<p class="hero-subtitle">Powered by Deep Neural Networks</p>', unsafe_allow_html=True)
+st.title("🎵 AI Music Hit Predictor")
+st.markdown("##### Powered by Deep Neural Networks")
 
 if model is None:
     st.error(f"⚠️ **Model files not found!**\nError Detail: `{load_error}`")
@@ -377,23 +220,14 @@ if st.button("🔮 Predict Hit Potential"):
         res_col1, res_col2 = st.columns(2)
         
         with res_col1:
-            st.markdown('<div class="stats-box">', unsafe_allow_html=True)
             st.metric(label="AI Confidence Score", value=f"{prob*100:.1f}%")
             st.caption(f"Requires exactly {best_thresh*100:.1f}% to be considered a hit")
-            st.markdown('</div>', unsafe_allow_html=True)
             
         with res_col2:
             if prob >= best_thresh:
-                st.markdown('<div class="stats-box">', unsafe_allow_html=True)
-                st.markdown("<h2 style='color:#1DB954;'>✅ GLOBAL HIT</h2>", unsafe_allow_html=True)
-                st.caption("The neural network strongly predicts this will chart.")
-                st.balloons()
+                st.success("✅ GLOBAL HIT Dashboard predicts this track will chart based on audio signatures.")
             else:
-                st.markdown('<div class="stats-box stats-box-fail">', unsafe_allow_html=True)
-                st.markdown("<h2 style='color:#FF416C;'>❌ FLOP</h2>", unsafe_allow_html=True)
-                st.caption("Lacks the specific audio signatures of top 10% hits.")
-                st.snow()
-            st.markdown('</div>', unsafe_allow_html=True)
+                st.error("❌ FLOP Dashboard calculates this track lacks the specific audio signatures of top 10% hits.")
 # ==========================================
 # TRAINING METRICS DASHBOARD
 # ==========================================
