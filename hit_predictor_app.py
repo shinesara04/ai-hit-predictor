@@ -185,18 +185,19 @@ def load_ml_assets():
         model = tf.keras.models.load_model(MODEL_DIR + "hit_dnn_model.h5")
         scaler = joblib.load(MODEL_DIR + "scaler.pkl")
         features_list = joblib.load(MODEL_DIR + "features.pkl")
-        baseline = joblib.load(MODEL_DIR + "confidence_baseline.pkl")
+        # In the latest script, we use best_thresh.pkl
+        best_thresh = joblib.load(MODEL_DIR + "best_thresh.pkl")
         
         # Load the new metrics files for the dashboard
         df_metrics = joblib.load(MODEL_DIR + "metrics_df.pkl")
         roc_data = joblib.load(MODEL_DIR + "roc_data.pkl")
         feature_ranges = joblib.load(MODEL_DIR + "feature_ranges.pkl")
         
-        return model, scaler, features_list, baseline, df_metrics, roc_data, feature_ranges
+        return model, scaler, features_list, best_thresh, df_metrics, roc_data, feature_ranges, None
     except Exception as e:
-        return None, None, None, None, None, None, None
+        return None, None, None, None, None, None, None, str(e)
 
-model, scaler, feature_names, baseline, df_metrics, roc_data, feature_ranges = load_ml_assets()
+model, scaler, feature_names, best_thresh, df_metrics, roc_data, feature_ranges, load_error = load_ml_assets()
 
 # ==========================================
 # UI HEADER
@@ -205,7 +206,7 @@ st.markdown('<p class="hero-title">AI Music Hit Predictor</p>', unsafe_allow_htm
 st.markdown('<p class="hero-subtitle">Powered by Deep Neural Networks</p>', unsafe_allow_html=True)
 
 if model is None:
-    st.error(f"⚠️ **Model files not found!**\nPlease download your Kaggle output files (.h5 and .pkl) and place them in a folder named `{os.path.abspath(MODEL_DIR)}` right next to this script.")
+    st.error(f"⚠️ **Model files not found!**\nError Detail: `{load_error}`")
     st.stop()
 
 # ==========================================
@@ -378,11 +379,11 @@ if st.button("🔮 Predict Hit Potential"):
         with res_col1:
             st.markdown('<div class="stats-box">', unsafe_allow_html=True)
             st.metric(label="AI Confidence Score", value=f"{prob*100:.1f}%")
-            st.caption(f"Requires exactly {baseline*100:.1f}% to be considered a hit")
+            st.caption(f"Requires exactly {best_thresh*100:.1f}% to be considered a hit")
             st.markdown('</div>', unsafe_allow_html=True)
             
         with res_col2:
-            if prob >= baseline:
+            if prob >= best_thresh:
                 st.markdown('<div class="stats-box">', unsafe_allow_html=True)
                 st.markdown("<h2 style='color:#1DB954;'>✅ GLOBAL HIT</h2>", unsafe_allow_html=True)
                 st.caption("The neural network strongly predicts this will chart.")
